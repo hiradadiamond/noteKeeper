@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavBar } from "./components/navbar/NavBar";
 import Button from "@restart/ui/esm/Button";
 import { AddNote } from "./components/notes/AddNote";
 import { nanoid } from "nanoid";
 import Note from './components/notes/Note';
-import { Notes } from "./components/notes/Notes";
+import axios from 'axios'; 
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -18,21 +18,38 @@ const App = () => {
 
   const AddNoteFunc = () => {
     setIsAdding(!isAdding);
+   
   };
 
   const deleteNote = (id) => {
     console.log(id + "This is from delete");
     const newNotes = notes.filter((note) => note.id !== id);
+    console.log(newNotes);
     setNotes(newNotes);
   };
 
-  const handleEditNote = (editNote) => {
-    console.log(editNote.id + "This is from edit");
-    const newNotes = notes.findIndex((note) => note.id === editNote.id);
-    setNotes(newNotes);
-    setCurNote({ id: editNote.id, text: editNote.text });
-    setIsAdding(!isAdding);
-  };
+  useEffect(() => {
+   fetchAllData();
+  }, [])
+
+  useEffect(() => { 
+  }, [notes])
+
+  // const handleEditNote = (editNote) => {
+  //   console.log(editNote.id + "This is from edit");
+  //   const newNotes = notes.findIndex((note) => note.id === editNote.id);
+  //   setNotes(newNotes);
+  //   setCurNote({ id: editNote.id, text: editNote.text });
+  //   setIsAdding(!isAdding);
+  // };
+  
+
+  const fetchAllData = ()=>{
+   axios.get("https://jsonplaceholder.typicode.com/posts").then(response=>{
+     setNotes(response.data);
+   });
+  }
+
 
   return (
     <div>
@@ -49,14 +66,15 @@ const App = () => {
           curNote={curNote}
         />
       ) : null}
-
-      <div className="notes-list">
+    <div className="notes-list">
         {notes.map((note) => (
           <Note
             id={note.id}
             title={note.title}
-            text={note.text}
-            handleDeleteNote={deleteNote}
+            text={note.body}
+            handleDeleteNote={()=>{
+              deleteNote(note.id);
+            }}
           />
         ))}
       </div>
