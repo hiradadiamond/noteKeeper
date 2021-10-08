@@ -10,14 +10,14 @@ export const AddNote = ({
   curNote,
 }) => {
   const [noteContent, setNoteContent] = useState(curNote.text);
-  const [noteTitle, setNoteTitle] = useState(curNote.handleChangeNoteTitle);
+  const [noteTitle, setNoteTitle] = useState(curNote.title);
   const saveNote = () => {
     const newNote = {
       id: nanoid(),
-      text: noteContent,
+      body: noteContent,
       title:noteTitle
     };
-    const newList = [...notes, newNote];
+    const newList = [ newNote, ...notes];
     setIsAdding();
     setNotes(newList);
   };

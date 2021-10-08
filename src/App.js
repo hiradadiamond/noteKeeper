@@ -3,8 +3,8 @@ import { NavBar } from "./components/navbar/NavBar";
 import Button from "@restart/ui/esm/Button";
 import { AddNote } from "./components/notes/AddNote";
 import { nanoid } from "nanoid";
-import Note from './components/notes/Note';
-import axios from 'axios'; 
+import Note from "./components/notes/Note";
+import axios from "axios";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -12,13 +12,12 @@ const App = () => {
 
   const [curNote, setCurNote] = useState({
     id: nanoid(),
-    text: "",
     title: "",
+    text: "",  
   });
 
   const AddNoteFunc = () => {
     setIsAdding(!isAdding);
-   
   };
 
   const deleteNote = (id) => {
@@ -29,27 +28,16 @@ const App = () => {
   };
 
   useEffect(() => {
-   fetchAllData();
-  }, [])
+    fetchAllData();
+  }, []);
 
-  useEffect(() => { 
-  }, [notes])
+  useEffect(() => {}, [notes]);
 
-  // const handleEditNote = (editNote) => {
-  //   console.log(editNote.id + "This is from edit");
-  //   const newNotes = notes.findIndex((note) => note.id === editNote.id);
-  //   setNotes(newNotes);
-  //   setCurNote({ id: editNote.id, text: editNote.text });
-  //   setIsAdding(!isAdding);
-  // };
-  
-
-  const fetchAllData = ()=>{
-   axios.get("https://jsonplaceholder.typicode.com/posts").then(response=>{
-     setNotes(response.data);
-   });
-  }
-
+  const fetchAllData = () => {
+    axios.get("https://jsonplaceholder.typicode.com/posts").then((response) => {
+      setNotes(response.data);
+    });
+  };
 
   return (
     <div>
@@ -64,15 +52,16 @@ const App = () => {
           notes={notes}
           setNotes={setNotes}
           curNote={curNote}
+          counter ={notes.length}
         />
       ) : null}
-    <div className="notes-list">
+      <div className="notes-list">
         {notes.map((note) => (
-          <Note
+          <Note key={note.id}
             id={note.id}
             title={note.title}
             text={note.body}
-            handleDeleteNote={()=>{
+            handleDeleteNote={() => {
               deleteNote(note.id);
             }}
           />

@@ -2,7 +2,7 @@ import { MdDeleteForever } from 'react-icons/md';
 import React,{useState}from 'react';
 import ContentEditable from 'react-contenteditable';
 
-const Note = ({ id, title,text, handleDeleteNote, notes }) => {
+const Note = ({ id, title,text, handleDeleteNote }) => {
 	const [curNote, setCurNote] = useState({
 		id:id,
 		title:title,
